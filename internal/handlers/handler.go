@@ -1,8 +1,8 @@
-package handler
+package handlers
 
 import (
 	"github.com/labstack/echo"
-	"github.com/robinferm/go-templ/templ"
+	"github.com/robinferm/go-templ/views/todoPage"
 )
 
 type GlobalState struct {
@@ -12,7 +12,7 @@ type GlobalState struct {
 var global GlobalState
 
 func GetHandler(c echo.Context) error {
-	component := templ.Page(global.Count)
+	component := todoPage.Page(global.Count)
 	return component.Render(c.Request().Context(), c.Response())
 }
 
@@ -23,6 +23,6 @@ func PostHandler(c echo.Context) error {
 		global.Count++
 	}
 
-	component := templ.Counter(global.Count)
+	component := todoPage.Counter(global.Count)
 	return component.Render(c.Request().Context(), c.Response())
 }

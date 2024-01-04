@@ -1,0 +1,42 @@
+package todoPage
+
+import (
+	"strconv"
+	"github.com/robinferm/go-templ/views/layout"
+)
+
+templ Counter(global int) {
+	<div id="counter">{ strconv.Itoa(global) }</div>
+}
+
+templ button() {
+	<div><button hx-post="/" hx-trigger="click" hx-target="#counter" name="global" value="global">Click me</button></div>
+}
+
+templ Page(global int) {
+	@layout.Base() {
+		@Counter(global)
+		@button()
+		@Todos()
+	}
+}
+
+templ Todos() {
+	<table>
+		<tr>
+			<th>Company</th>
+			<th>Contact</th>
+			<th>Country</th>
+		</tr>
+		<tr>
+			<td>Alfreds Futterkiste</td>
+			<td>Maria Anders</td>
+			<td>Germany</td>
+		</tr>
+		<tr>
+			<td>Centro comercial Moctezuma</td>
+			<td>Francisco Chang</td>
+			<td>Mexico</td>
+		</tr>
+	</table>
+}
