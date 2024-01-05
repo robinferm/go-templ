@@ -10,8 +10,10 @@ templ Base() {
 			<meta charset="UTF-8"/>
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"/>
 		</head>
-		<body>
-			htmx-templ
+		<body class="container">
+		<header>
+			<h1>htmx-templ</h1>
+		</header>
 			{ children... }
 			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
 		</body>

@@ -1,42 +1,28 @@
 package todoPage
 
 import (
-	"strconv"
 	"github.com/robinferm/go-templ/views/layout"
+	"github.com/robinferm/go-templ/internal/models"
+
 )
-
-templ Counter(global int) {
-	<div id="counter">{ strconv.Itoa(global) }</div>
-}
-
-templ button() {
-	<div><button hx-post="/" hx-trigger="click" hx-target="#counter" name="global" value="global">Click me</button></div>
-}
-
-templ Page(global int) {
+templ Todos(todos []models.Todo) {
 	@layout.Base() {
-		@Counter(global)
-		@button()
-		@Todos()
-	}
-}
-
-templ Todos() {
+	<button>Add Todo</button>
 	<table>
 		<tr>
-			<th>Company</th>
-			<th>Contact</th>
-			<th>Country</th>
+			<th>Id</th>
+			<th>Title</th>
+			<th>Done</th>
+			<th></th>
 		</tr>
-		<tr>
-			<td>Alfreds Futterkiste</td>
-			<td>Maria Anders</td>
-			<td>Germany</td>
-		</tr>
-		<tr>
-			<td>Centro comercial Moctezuma</td>
-			<td>Francisco Chang</td>
-			<td>Mexico</td>
-		</tr>
+		for _, todo := range todos {
+			<tr Id={todo.Id}>
+				<td>{ todo.Id }</td>
+				<td>{ todo.Title }</td>
+				<td>asd</td>
+				<td><button value={todo.Id} hx-post={"/delete/"+todo.Id} hx-swap="outerHtml" style="font-size: 0.8em">Delete</button></td>
+			</tr>
+		}
 	</table>
+	}
 }

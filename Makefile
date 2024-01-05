@@ -1,3 +1,3 @@
 run:
 	@templ generate
-	air
+	go run ./cmd/main.go
