@@ -12,8 +12,8 @@ func main() {
 	e := echo.New()
 
 	e.GET("/", GetTodosHandler)
-	e.POST("/delete/:id", DeleteTodoByIdHandler)
-	// e.POST("/", handlers.PostHandler)
+	e.DELETE("/delete/:id", DeleteTodoByIdHandler)
+	e.POST("/add", AddTodoHandler)
 
 	e.Logger.Fatal(e.Start("localhost:1323"))
 

@@ -17,7 +17,7 @@ templ base() {
 		</head>
 		<body class="container">
 		<header>
-			<h1>htmx-templ</h1>
+			<h1>Home</h1>
 		</header>
 			{ children... }
 			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -25,10 +25,34 @@ templ base() {
 	</html>
 }
 
-templ Todos(todos []Todo) {
+templ TodoPage(todos []Todo) {
 	@base() {
-	<button hx-post={"/add"}>Add Todo</button>
-	<table>
+		<h2>Todos</h2>
+		@todoTable(todos)
+	}
+}
+
+templ addTodoInput() {
+	<div class="grid">
+	<form 
+	method="POST"
+	action="/add"
+	hx-post="/add"
+	hx-select="#todoTable"
+	hx-target="#todoTable">
+		<input 
+			type="text" 
+			name="title" 
+			placeholder="Title"
+			/>
+	<button type="submit">Add Todo</button>
+	</form>
+	</div>
+}
+
+templ todoTable(todos []Todo) {
+	@addTodoInput()
+	<table Id="todoTable">
 		<tr>
 			<th>Id</th>
 			<th>Title</th>
@@ -40,9 +64,12 @@ templ Todos(todos []Todo) {
 				<td>{ todo.Id }</td>
 				<td>{ todo.Title }</td>
 				<td>asd</td>
-				<td><button value={todo.Id} hx-post={"/delete/"+todo.Id} hx-swap="outerHtml" style="font-size: 0.8em">Delete</button></td>
+				<td><button class={addTodoButton} value={todo.Id} hx-delete={"/delete/"+todo.Id} hx-target="#todoTable" hx-select="#todoTable">Delete</button></td>
 			</tr>
 		}
 	</table>
-	}
+}
+
+css addTodoButton() {
+	font-size: 0.8em;
 }
