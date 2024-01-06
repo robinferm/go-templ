@@ -1,0 +1,48 @@
+package main
+
+import (
+
+
+)
+
+templ base() {
+	<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<title>
+				htmx-templ
+			</title>
+			<meta charset="UTF-8"/>
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"/>
+		</head>
+		<body class="container">
+		<header>
+			<h1>htmx-templ</h1>
+		</header>
+			{ children... }
+			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+		</body>
+	</html>
+}
+
+templ Todos(todos []Todo) {
+	@base() {
+	<button hx-post={"/add"}>Add Todo</button>
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Title</th>
+			<th>Done</th>
+			<th></th>
+		</tr>
+		for _, todo := range todos {
+			<tr Id={todo.Id}>
+				<td>{ todo.Id }</td>
+				<td>{ todo.Title }</td>
+				<td>asd</td>
+				<td><button value={todo.Id} hx-post={"/delete/"+todo.Id} hx-swap="outerHtml" style="font-size: 0.8em">Delete</button></td>
+			</tr>
+		}
+	</table>
+	}
+}
