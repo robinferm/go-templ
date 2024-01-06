@@ -53,7 +53,6 @@ func GetTodos() []Todo {
 }
 
 func AddTodo(title string) {
-	fmt.Printf("Adding todo with title: %s\n", title)
 	_, err := conn.Exec(context.Background(), "insert into todos (title, done) values ($1, $2)", title, false)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
@@ -62,8 +61,15 @@ func AddTodo(title string) {
 }
 
 func DeleteTodoById(id string) {
-	fmt.Printf("Deleting todo with id: %s\n", id)
 	_, err := conn.Exec(context.Background(), "delete from todos where id=$1", id)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func ToggleTodoById(id string) {
+	_, err := conn.Exec(context.Background(), "update todos set done = not done where id=$1", id)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
 		os.Exit(1)

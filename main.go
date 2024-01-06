@@ -14,6 +14,7 @@ func main() {
 	e.GET("/", GetTodosHandler)
 	e.DELETE("/delete/:id", DeleteTodoByIdHandler)
 	e.POST("/add", AddTodoHandler)
+	e.POST("/toggle/:id", ToggleTodoByIdHandler)
 
 	e.Logger.Fatal(e.Start("localhost:1323"))
 

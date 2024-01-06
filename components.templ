@@ -1,11 +1,8 @@
 package main
 
-import (
+import ()
 
-
-)
-
-templ base() {
+templ layout() {
 	<!DOCTYPE html>
 	<html lang="en">
 		<head>
@@ -14,44 +11,51 @@ templ base() {
 			</title>
 			<meta charset="UTF-8"/>
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css"/>
+			<script src="https://kit.fontawesome.com/386cac2e51.js" crossorigin="anonymous"></script>
 		</head>
 		<body class="container">
-		<header>
-			<h1>Home</h1>
-		</header>
+			<header>
+				<h1>Home</h1>
+			</header>
 			{ children... }
 			<script src="https://unpkg.com/htmx.org@1.9.10"></script>
 		</body>
 	</html>
 }
 
-templ TodoPage(todos []Todo) {
-	@base() {
-		<h2>Todos</h2>
-		@todoTable(todos)
+templ HomePage() {
+	@layout() {
+		<h2>Home</h2>
+		<p>
+			<a href="/todos">Todos</a>
+		</p>
 	}
 }
 
-templ addTodoInput() {
-	<div class="grid">
-	<form 
-	method="POST"
-	action="/add"
-	hx-post="/add"
-	hx-select="#todoTable"
-	hx-target="#todoTable">
-		<input 
-			type="text" 
-			name="title" 
-			placeholder="Title"
-			/>
-	<button type="submit">Add Todo</button>
-	</form>
-	</div>
+templ TodoPage(todos []Todo) {
+	@layout() {
+		<h2>Todos</h2>
+		@todosTemplate(todos)
+	}
 }
 
-templ todoTable(todos []Todo) {
-	@addTodoInput()
+templ todosTemplate(todos []Todo) {
+	<form
+		method="POST"
+		action="/add"
+		hx-post="/add"
+		hx-select="#todoTable"
+		hx-target="#todoTable"
+	>
+		<div class="grid">
+			<input
+				type="text"
+				name="title"
+				placeholder="Title"
+			/>
+			<button class={ addTodoButton } type="submit">Add Todo</button>
+		</div>
+	</form>
 	<table Id="todoTable">
 		<tr>
 			<th>Id</th>
@@ -60,11 +64,28 @@ templ todoTable(todos []Todo) {
 			<th></th>
 		</tr>
 		for _, todo := range todos {
-			<tr Id={todo.Id}>
+			<tr Id={ todo.Id }>
 				<td>{ todo.Id }</td>
 				<td>{ todo.Title }</td>
-				<td>asd</td>
-				<td><button class={addTodoButton} value={todo.Id} hx-delete={"/delete/"+todo.Id} hx-target="#todoTable" hx-select="#todoTable">Delete</button></td>
+				<td>
+					<input
+						type="checkbox"
+						checked?={ todo.Done }
+						hx-trigger="change"
+						hx-post={ "/toggle/" + todo.Id }
+					/>
+				</td>
+				<td>
+					<button
+						class={ deleteButton() }
+						value={ todo.Id }
+						hx-delete={ "/delete/" + todo.Id }
+						hx-target="#todoTable"
+						hx-select="#todoTable"
+					>
+						Delete
+					</button>
+				</td>
 			</tr>
 		}
 	</table>
@@ -72,4 +93,11 @@ templ todoTable(todos []Todo) {
 
 css addTodoButton() {
 	font-size: 0.8em;
+	width: 100%;
+}
+
+css deleteButton() {
+	margin: 0;
+	width: 50%;
+	float: right;
 }

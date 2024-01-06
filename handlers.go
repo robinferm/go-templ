@@ -15,7 +15,7 @@ func AddTodoHandler(c echo.Context) error {
 	AddTodo(title)
 
 	todos := GetTodos()
-	component := todoTable(todos)
+	component := todosTemplate(todos)
 	return component.Render(c.Request().Context(), c.Response().Writer)
 }
 
@@ -24,6 +24,15 @@ func DeleteTodoByIdHandler(c echo.Context) error {
 	DeleteTodoById(id)
 
 	todos := GetTodos()
-	component := todoTable(todos)
+	component := todosTemplate(todos)
+	return component.Render(c.Request().Context(), c.Response().Writer)
+}
+
+func ToggleTodoByIdHandler(c echo.Context) error {
+	id := c.Param("id")
+	ToggleTodoById(id)
+
+	todos := GetTodos()
+	component := todosTemplate(todos)
 	return component.Render(c.Request().Context(), c.Response().Writer)
 }
