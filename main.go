@@ -16,6 +16,5 @@ func main() {
 	e.POST("/add", AddTodoHandler)
 	e.POST("/toggle/:id", ToggleTodoByIdHandler)
 
-	e.Logger.Fatal(e.Start("localhost:1323"))
-
+	e.Logger.Fatal(e.Start("0.0.0.0:8080"))
 }

@@ -3,16 +3,22 @@ package main
 import (
 	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/joho/godotenv"
 )
 
 var conn *pgx.Conn
 
 func ConnectDB() {
 	var err error
-	url := "postgres://postgres:mysecretpassword@localhost:5432/tododb"
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+
+	url := os.Getenv("DATABASE_URL")
 	conn, err = pgx.Connect(context.Background(), url)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
